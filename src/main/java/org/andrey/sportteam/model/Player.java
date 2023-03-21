@@ -2,14 +2,14 @@ package org.andrey.sportteam.model;
 
 
 import javax.persistence.*;
-import javax.xml.crypto.Data;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
     @Column(name = "teamId")
     private Long teamId;
@@ -20,19 +20,14 @@ public class Player {
     @Column(name = "middleName")
     private String middleName;
     @Column(name = "birthDay")
-    private Data birthDay;
+    private Date birthDay;
     @Column(name = "role")
     private String role;
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "teamId", insertable = false, updatable = false)
     private Team team;
 
-    public Team getTeam() {
-        return team;
-    }
-
-
-    public Player(Long id, Long teamId, String lastName, String name, String middleName, Data birthDay, String role) {
+    public Player(Long id, Long teamId, String lastName, String name, String middleName, Date birthDay, String role) {
         this.id = id;
         this.teamId = teamId;
         this.lastName = lastName;
@@ -43,6 +38,9 @@ public class Player {
     }
 
     public Player() {
+    }
+    public Team getTeam() {
+        return team;
     }
 
     public Long getId() {
@@ -85,11 +83,11 @@ public class Player {
         this.middleName = middleName;
     }
 
-    public Data getBirthDay() {
+    public Date getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Data birthDay) {
+    public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
 
