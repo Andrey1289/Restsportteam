@@ -19,20 +19,50 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @GetMapping("getAll")
+
+    @GetMapping
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(){
 
-        return null;
+         List<PlayerDTO> playerDTOList = (PlayerDTO.playerDTOList(playerService.getAllPlayers()));
+         if(playerDTOList.isEmpty()){
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         }
+        return new ResponseEntity<>(playerDTOList,HttpStatus.OK);
+    }
+    @GetMapping("{teamName}")
+    public ResponseEntity<List<PlayerDTO>> getAllPlayersByTeamName(@PathVariable String teamName){
+         List<PlayerDTO> playerDTOList = PlayerDTO.playerDTOList(playerService.getAllPlayersByTeamName(teamName));
+          if(playerDTOList.isEmpty()){
+              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+          }
+
+         return new ResponseEntity<>(playerDTOList,HttpStatus.OK);
+    }
+    @GetMapping("filter/{role}")
+    public ResponseEntity<List<PlayerDTO>> getAllPlayersByRoll(@PathVariable String roll){
+        List<PlayerDTO> playerDTOList = PlayerDTO.playerDTOList(playerService.getAllPlayersByTeamName(roll));
+
+
+        return new ResponseEntity<>(playerDTOList,HttpStatus.OK);
     }
 
     @PostMapping("create")
     public ResponseEntity<PlayerDTO> createPlayer(@RequestBody PlayerDTO playerDTO){
-            if(playerDTO == null){
+            if(!PlayerDTO.isValid(playerDTO)){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             playerDTO =PlayerDTO.fromPlayer(playerService.createPlayer(PlayerDTO.toPlayer(playerDTO)));
 
         return new ResponseEntity<>(playerDTO,HttpStatus.OK);
+    }
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long id){
+         if(id ==null){
+             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+         }
+         playerService.deletePlayer(id);
+
+         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

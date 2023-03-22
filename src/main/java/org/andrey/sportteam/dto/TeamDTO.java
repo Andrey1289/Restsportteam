@@ -1,8 +1,10 @@
 package org.andrey.sportteam.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.andrey.sportteam.model.Team;
 
-import javax.xml.crypto.Data;
+
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,13 +13,14 @@ public class TeamDTO {
 
     public String teamName;
     public String sportName;
-    public Date  foundingData;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    public Date foundingDate;
 
     public static TeamDTO fromTeam(Team team){
          TeamDTO teamDTO = new TeamDTO();
-         teamDTO.setTeamName(teamDTO.getTeamName());
+         teamDTO.setTeamName(team.getTeamName());
          teamDTO.setSportName(team.getSportName());
-         teamDTO.setFoundingData(team.getFoundingDate());
+         teamDTO.setFoundingDate(team.getFoundingDate());
 
          return teamDTO;
     }
@@ -26,7 +29,7 @@ public class TeamDTO {
         Team team = new Team();
          team.setTeamName(teamDTO.getTeamName());
          team.setSportName(teamDTO.getSportName());
-         team.setFoundingDate((Date) teamDTO.foundingData);
+         team.setFoundingDate(teamDTO.foundingDate);
 
         return team;
     }
@@ -35,6 +38,19 @@ public class TeamDTO {
      List<TeamDTO> teamDTOS = new ArrayList<>();
       teamList.forEach(team -> teamDTOS.add(fromTeam(team)));
       return teamDTOS;
+    }
+
+    public static boolean isValid(TeamDTO teamDTO){
+        if(teamDTO.getTeamName() == null){
+            return false;
+        }
+        if(teamDTO.getSportName() == null){
+            return false;
+        }
+        if(teamDTO.foundingDate == null){
+            return false;
+        }
+        return true;
     }
 
     public String getTeamName() {
@@ -53,11 +69,11 @@ public class TeamDTO {
         this.sportName = sportName;
     }
 
-    public Date getFoundingData() {
-        return foundingData;
+    public Date getFoundingDate() {
+        return foundingDate;
     }
 
-    public void setFoundingData(Date foundingData) {
-        this.foundingData = foundingData;
+    public void setFoundingDate(Date foundingDate) {
+        this.foundingDate = foundingDate;
     }
 }

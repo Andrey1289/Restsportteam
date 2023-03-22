@@ -7,6 +7,7 @@ import java.util.List;
 public interface PlayerService {
 
     public List<Player> getAllPlayers();
+    public List<Player> getAllPlayersByTeamName(String teamName);
     public Player createPlayer(Player player);
     public Player updatePlayer(Player player);
     public void deletePlayer(Long id);

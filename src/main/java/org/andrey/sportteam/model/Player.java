@@ -1,7 +1,10 @@
 package org.andrey.sportteam.model;
 
 
+import sun.util.resources.LocaleData;
+
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 
@@ -110,5 +113,9 @@ public class Player {
                 ", birthDay=" + birthDay +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

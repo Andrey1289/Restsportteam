@@ -1,6 +1,7 @@
 package org.andrey.sportteam.model;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,5 +72,13 @@ public class Team {
                 ", sportName='" + sportName + '\'' +
                 ", foundingDate=" + foundingDate +
                 '}';
+    }
+
+    public List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public void setPlayerList(List<Player> playerList) {
+        this.playerList = playerList;
     }
 }
