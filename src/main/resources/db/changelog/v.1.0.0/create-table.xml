@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="Andrey" id="1679650383003-1">
+        <createTable tableName="teams">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="teams_pkey"/>
+            </column>
+            <column name="founding_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="sport_name" type="VARCHAR(255)"/>
+            <column name="team_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Andrey" id="1679650383003-2">
+        <createTable tableName="players">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="players_pkey"/>
+            </column>
+            <column name="birth_day" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="middle_name" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(255)"/>
+            <column name="team_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Andrey" id="1679650383003-3">
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="players" constraintName="fk5nglidr00c4dyybl171v6kask" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

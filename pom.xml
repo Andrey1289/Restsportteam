@@ -53,8 +53,8 @@
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>4.17.2</version>
 				<configuration>
-					<driver>org.h2.Driver</driver>
-					<url>jdbc:postgresql://localhost:5432/playerAndTeam</url>
+					<driver>org.postgresql.Driver</driver>
+					<url>jdbc:postgresql://localhost:5432/new</url>
 					<username>postgres</username>
 					<password>root</password>
 					<outputChangeLogFile>src/main/resources/liquibase-outputChangeLog.xml</outputChangeLogFile>
