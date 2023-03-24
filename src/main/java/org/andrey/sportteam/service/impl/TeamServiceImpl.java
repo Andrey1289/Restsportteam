@@ -41,6 +41,18 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team updateTeam(Team team) {
+        Team updateTeam = teamRepository.findById(team.getId()).orElse(null);
+        if (updateTeam != null) {
+            if (team.getTeamName() != null) {
+                updateTeam.setTeamName(team.getTeamName());
+            }
+            if (team.getSportName() != null) {
+                updateTeam.setSportName(team.getSportName());
+            }
+            if (team.getFoundingDate() != null) {
+                updateTeam.setFoundingDate(team.getFoundingDate());
+            }
+        }
         return teamRepository.save(team);
     }
 

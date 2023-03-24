@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TeamDTO {
-
+    public Long id;
     public String teamName;
     public String sportName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -18,6 +18,7 @@ public class TeamDTO {
 
     public static TeamDTO fromTeam(Team team){
          TeamDTO teamDTO = new TeamDTO();
+         teamDTO.setId(team.getId());
          teamDTO.setTeamName(team.getTeamName());
          teamDTO.setSportName(team.getSportName());
          teamDTO.setFoundingDate(team.getFoundingDate());
@@ -26,7 +27,8 @@ public class TeamDTO {
     }
 
     public static Team toTeam(TeamDTO teamDTO){
-        Team team = new Team();
+         Team team = new Team();
+         team.setId(teamDTO.getId());
          team.setTeamName(teamDTO.getTeamName());
          team.setSportName(teamDTO.getSportName());
          team.setFoundingDate(teamDTO.foundingDate);
@@ -48,6 +50,12 @@ public class TeamDTO {
             return false;
         }
         if(teamDTO.foundingDate == null){
+            return false;
+        }
+        return true;
+    }
+    public static boolean isValidForUpdate(TeamDTO teamDTO){
+        if(teamDTO.getTeamName() == null) {
             return false;
         }
         return true;
@@ -75,5 +83,13 @@ public class TeamDTO {
 
     public void setFoundingDate(Date foundingDate) {
         this.foundingDate = foundingDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

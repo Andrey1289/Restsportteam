@@ -1,10 +1,7 @@
 package org.andrey.sportteam.model;
 
 
-import sun.util.resources.LocaleData;
-
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.Date;
 
 
@@ -26,7 +23,7 @@ public class Player {
     private Date birthDay;
     @Column(name = "role")
     private String role;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teamId", insertable = false, updatable = false)
     private Team team;
 

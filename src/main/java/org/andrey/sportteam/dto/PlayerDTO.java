@@ -3,7 +3,6 @@ package org.andrey.sportteam.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.andrey.sportteam.model.Player;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,7 @@ public class PlayerDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date birthDay;
     private String role;
+    private String teamEnrollment;
 
     public static PlayerDTO fromPlayer(Player player){
         PlayerDTO playerDTO = new PlayerDTO();
@@ -35,6 +35,7 @@ public class PlayerDTO {
 
     public static Player toPlayer(PlayerDTO playerDTO){
         Player player = new Player();
+        player.setId(playerDTO.getId());
         player.setTeamId(playerDTO.getTeamId());
         player.setLastName(playerDTO.getLastName());
         player.setName(playerDTO.getName());
@@ -53,23 +54,50 @@ public class PlayerDTO {
 
     }
 
-    public static boolean isValid(PlayerDTO playerDTO){
-       if(playerDTO.getLastName() == null){
-           return false;
-       }
-       if(playerDTO.getName()== null){
+    public static boolean isValid(PlayerDTO playerDTO) {
+        if (playerDTO.getLastName() == null) {
             return false;
         }
-        if (playerDTO.getMiddleName()== null){
-           return false;
-        }
-       if (playerDTO.getBirthDay()== null) {
-           return false;
-       }
-        if(playerDTO.getRole()== null) {
+        if (playerDTO.getName() == null) {
             return false;
         }
-                return true;
+        if (playerDTO.getMiddleName() == null) {
+            return false;
+        }
+        if (playerDTO.getBirthDay() == null) {
+            return false;
+        }
+        if (playerDTO.getRole() == null) {
+            return false;
+        }
+        return true;
+    }
+        public static boolean isValidForUpdate(PlayerDTO playerDTO){
+           if(playerDTO.getId() == null){
+               return false;
+           }
+            if(playerDTO.getLastName() == null){
+                return false;
+            }
+            if(playerDTO.getName()== null){
+                return false;
+            }
+            if (playerDTO.getMiddleName()== null){
+                return false;
+            }
+            return true;
+    }
+        public static boolean isValidForTransfer(PlayerDTO playerDTO){
+        if(playerDTO.getLastName() == null){
+            return false;
+        }
+        if(playerDTO.getName()== null){
+            return false;
+        }
+        if(playerDTO.getTeamEnrollment() == null){
+            return false;
+        }
+        return true;
     }
 
     public Long getId() {
@@ -126,5 +154,13 @@ public class PlayerDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getTeamEnrollment() {
+        return teamEnrollment;
+    }
+
+    public void setTeamEnrollment(String teamEnrollment) {
+        this.teamEnrollment = teamEnrollment;
     }
 }

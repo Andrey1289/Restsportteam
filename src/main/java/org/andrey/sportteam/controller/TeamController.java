@@ -1,6 +1,7 @@
 package org.andrey.sportteam.controller;
 
 import liquibase.repackaged.org.apache.commons.lang3.time.DateUtils;
+import org.andrey.sportteam.dto.PlayerDTO;
 import org.andrey.sportteam.dto.TeamDTO;
 import org.andrey.sportteam.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class TeamController {
         return new ResponseEntity<>(teamDTOList,HttpStatus.OK);
     }
     @GetMapping("date/{date}")
-    public ResponseEntity<List<TeamDTO>> getAllTeamPeriodOfTime(@PathVariable Date date) throws ParseException {
+    public ResponseEntity<List<TeamDTO>> getAllTeamPeriodOfSince(@PathVariable Date date) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         System.out.println(date);
@@ -73,6 +74,16 @@ public class TeamController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PutMapping("update")
+    public ResponseEntity<TeamDTO> updateTeam(@RequestBody TeamDTO teamDTO){
+        if(!TeamDTO.isValidForUpdate(teamDTO)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        teamDTO = TeamDTO.fromTeam(teamService.updateTeam(TeamDTO.toTeam(teamDTO)));
+
+        return new ResponseEntity<>(teamDTO,HttpStatus.OK);
+    }
+
 
 
 }

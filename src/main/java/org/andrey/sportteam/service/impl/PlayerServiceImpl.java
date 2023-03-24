@@ -6,6 +6,7 @@ import org.andrey.sportteam.repository.PlayerRepository;
 import org.andrey.sportteam.repository.TeamRepository;
 import org.andrey.sportteam.service.PlayerService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,23 +35,51 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public List<Player> getAllPlayersByPlayerRole(String role) {
+
+        return playerRepository.findAllByroleIgnoreCase(role);
+    }
+
+    @Override
     public Player createPlayer(Player player) {
         return playerRepository.save(player);
     }
 
     @Override
     public Player updatePlayer(Player player) {
-        return playerRepository.save(player);
+        Player updatePlayer = playerRepository.findById(player.getId()).orElseThrow(null);
+
+        if(player.getLastName() != null){
+             updatePlayer.setLastName(player.getLastName());
+         }
+         if(player.getName() != null){
+             updatePlayer.setName(player.getName());
+         }
+        if (player.getMiddleName() != null) {
+            updatePlayer.setMiddleName(player.getMiddleName());
+        }
+        if(player.getRole() !=null){
+            updatePlayer.setRole(player.getRole());
+        }
+
+        return playerRepository.save(updatePlayer);
     }
 
     @Override
-    public void deletePlayer(Long id) {
-      playerRepository.deleteById(id);
+    @Transactional
+    public Long deletePlayer(Long id) {
+    return playerRepository.deleteByid(id);
     }
 
     @Override
-    public Player transferPlayer(Player transferPlayer) {
+    public Player transferPlayer(Player transferPlayer,String teamEnrollment) {
+        Player transfPlayer = playerRepository.findByLastNameAndNameIgnoreCase(transferPlayer.getLastName(),transferPlayer.getName());
+        Team enrollTeam = teamRepository.findByteamNameIgnoreCase(teamEnrollment);
+        if(enrollTeam != null){
+            transfPlayer.setTeamId(enrollTeam.getId());
+        }
 
-        return playerRepository.save(transferPlayer);
+
+        return playerRepository.save(transfPlayer);
     }
 }

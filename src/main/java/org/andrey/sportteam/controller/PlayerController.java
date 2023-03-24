@@ -1,6 +1,7 @@
 package org.andrey.sportteam.controller;
 
 import org.andrey.sportteam.dto.PlayerDTO;
+import org.andrey.sportteam.model.Player;
 import org.andrey.sportteam.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,9 @@ public class PlayerController {
 
          return new ResponseEntity<>(playerDTOList,HttpStatus.OK);
     }
-    @GetMapping("filter/{role}")
+    @GetMapping("filter/{roll}")
     public ResponseEntity<List<PlayerDTO>> getAllPlayersByRoll(@PathVariable String roll){
-        List<PlayerDTO> playerDTOList = PlayerDTO.playerDTOList(playerService.getAllPlayersByTeamName(roll));
+        List<PlayerDTO> playerDTOList = PlayerDTO.playerDTOList(playerService.getAllPlayersByPlayerRole(roll));
 
 
         return new ResponseEntity<>(playerDTOList,HttpStatus.OK);
@@ -60,9 +61,33 @@ public class PlayerController {
          if(id ==null){
              return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
          }
-         playerService.deletePlayer(id);
+        Long returnIdDeletedObject = playerService.deletePlayer(id);
+         if(id != returnIdDeletedObject){
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         }
 
-         return new ResponseEntity<>(HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("update")
+    public ResponseEntity<PlayerDTO> updatePlayerOrSetPlayerInTheTeam(@RequestBody PlayerDTO playerDTO){
+         if(!PlayerDTO.isValidForUpdate(playerDTO)){
+             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+         }
+        playerDTO = PlayerDTO.fromPlayer(playerService.updatePlayer(PlayerDTO.toPlayer(playerDTO)));
+
+
+        return new ResponseEntity<>(playerDTO,HttpStatus.OK);
+    }
+    @PutMapping("transfer")
+    public ResponseEntity<PlayerDTO> transferPlayer(@RequestBody PlayerDTO playerDTO){
+        if(!PlayerDTO.isValidForTransfer(playerDTO)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        playerDTO = PlayerDTO.fromPlayer(playerService.transferPlayer(PlayerDTO.toPlayer(playerDTO), playerDTO.getTeamEnrollment()));
+
+
+        return new ResponseEntity<>(playerDTO,HttpStatus.OK);
     }
 
 }

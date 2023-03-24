@@ -19,7 +19,7 @@ public class Team {
     private String sportName;
     @Column(name = "foundingDate")
     private Date foundingDate;
-    @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Player> playerList = new ArrayList<>();
 
     public Team() {
